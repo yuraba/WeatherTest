@@ -1,0 +1,41 @@
+﻿@model WeatherViewModel
+@{
+    ViewBag.Title = "Прогноз погоди";
+}
+
+<h2>Прогноз погоди</h2>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Введіть місто:
+        @Html.TextBox("city", Model?.City)
+        <input type="submit" value="Отримати погоду" />
+    </p>
+}
+
+@if (ViewBag.RainWarning != null)
+{
+    <div style="color:red;">
+        @ViewBag.RainWarning
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+        <div style="color:red;">
+            @error.ErrorMessage
+        </div>
+    }
+}
+
+@if (Model != null && Model.Temperature != 0)
+{
+    <h3>Погода в @Model.City</h3>
+    <p>Температура: @Model.Temperature°C</p>
+    <p>Максимальна: @Model.TempMax°C</p>
+    <p>Мінімальна: @Model.TempMin°C</p>
+    <p>Умови: @Model.WeatherDescription</p>
+}
